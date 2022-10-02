@@ -1,0 +1,127 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://sprite_sheet.png" type="Texture" id=1]
+[ext_resource path="res://fonts/MainFont.tres" type="DynamicFont" id=2]
+[ext_resource path="res://shaders/Chromat.gdshader" type="Shader" id=3]
+
+[sub_resource type="Animation" id=9]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ true ]
+}
+
+[sub_resource type="Animation" id=10]
+resource_name = "flash"
+length = 0.2
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ false, true ]
+}
+
+[sub_resource type="ShaderMaterial" id=5]
+shader = ExtResource( 3 )
+shader_param/r_displacement = Vector2( 2, 0 )
+shader_param/g_displacement = Vector2( 0, 0 )
+shader_param/b_displacement = Vector2( -2, 0 )
+
+[node name="CanvasLayer" type="CanvasLayer"]
+
+[node name="GlobalTimeBar" type="Control" parent="." groups=["time_bar"]]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -6.0
+margin_top = 11.0
+margin_right = 34.0
+margin_bottom = 51.0
+
+[node name="TimeFill" type="ColorRect" parent="GlobalTimeBar"]
+margin_left = -21.0
+margin_top = -5.0
+margin_right = 38.0
+margin_bottom = 6.0
+rect_scale = Vector2( 0.5, 1 )
+
+[node name="Sprite" type="Sprite" parent="GlobalTimeBar"]
+texture = ExtResource( 1 )
+region_enabled = true
+region_rect = Rect2( 0, 208, 112, 16 )
+
+[node name="TimerLabel" type="Label" parent="." groups=["timer_label"]]
+margin_left = 162.0
+margin_top = 19.0
+margin_right = 227.0
+margin_bottom = 39.0
+custom_fonts/font = ExtResource( 2 )
+text = "10.0 seconds"
+align = 1
+
+[node name="Timer" type="Timer" parent="TimerLabel"]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="TimerLabel"]
+anims/RESET = SubResource( 9 )
+anims/flash = SubResource( 10 )
+
+[node name="HealthBar" type="Control" parent="." groups=["health_bar"]]
+margin_left = 46.0
+margin_top = 194.0
+margin_right = 218.0
+margin_bottom = 212.0
+
+[node name="HealthContainer" type="HBoxContainer" parent="HealthBar"]
+unique_name_in_owner = true
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 2.0
+margin_right = 2.0
+
+[node name="Label" type="Label" parent="HealthBar"]
+margin_left = -40.0
+margin_top = 1.0
+margin_bottom = 22.0
+custom_fonts/font = ExtResource( 2 )
+text = "HEALTH"
+
+[node name="StageLabel" type="Control" parent="."]
+margin_left = 324.0
+margin_top = 194.0
+margin_right = 364.0
+margin_bottom = 234.0
+
+[node name="Label" type="Label" parent="StageLabel" groups=["stage_label"]]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_fonts/font = ExtResource( 2 )
+text = "stage 2/6"
+
+[node name="EnemyCount" type="Label" parent="." groups=["enemy_count_label"]]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 314.0
+margin_top = 177.0
+margin_right = 314.0
+margin_bottom = 177.0
+custom_fonts/font = ExtResource( 2 )
+text = "enemies 0"
+
+[node name="CRT" type="ColorRect" parent="."]
+material = SubResource( 5 )
+anchor_right = 1.0
+anchor_bottom = 1.0
